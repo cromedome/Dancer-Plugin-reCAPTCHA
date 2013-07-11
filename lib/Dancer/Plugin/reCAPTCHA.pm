@@ -92,6 +92,10 @@ register recaptcha_check => sub {
     );
 };
 
+=head2 TODO
+
+Add a real test suite.
+
 =head1 SEE ALSO
 
 =for :list
