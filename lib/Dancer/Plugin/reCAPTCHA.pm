@@ -78,7 +78,7 @@ For example:
     );
     die "User didn't match the CAPTCHA" unless $result->{ is_valid };
 
-See L< Captcha::reCAPTCHA > for a description of the result hash.
+See L<Captcha::reCAPTCHA> for a description of the result hash.
 
 =cut 
 
@@ -99,9 +99,9 @@ Add a real test suite.
 =head1 SEE ALSO
 
 =for :list
-* L< Captcha::reCAPTCHA >
-* L< Dancer::Plugin >
-* L< Dancer >
+* L<Captcha::reCAPTCHA>
+* L<Dancer::Plugin>
+* L<Dancer>
 
 =cut 
 
