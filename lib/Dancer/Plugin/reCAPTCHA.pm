@@ -1,7 +1,7 @@
 package Dancer::Plugin::reCAPTCHA;
 # ABSTRACT: Easily integrate reCAPTCHA into your Dancer applications
 {
-    $Dancer::Plugin::reCAPTCHA::VERSION = '0.2';
+    $Dancer::Plugin::reCAPTCHA::VERSION = '0.3';
 }
 
 =head1 SYNOPSIS
@@ -31,7 +31,6 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use Captcha::reCAPTCHA;
 
-my $conf = plugin_setting();
 my $rc   = Captcha::reCAPTCHA->new;
 
 =method recaptcha_display( )
@@ -53,6 +52,7 @@ Using Template Toolkit as an example, this might look like:
 =cut
 
 register recaptcha_display => sub {
+    my $conf = plugin_setting();
     return $rc->get_html( 
         $conf->{ public_key },
         undef,
@@ -84,6 +84,7 @@ See L<Captcha::reCAPTCHA> for a description of the result hash.
 
 register recaptcha_check => sub {
     my ( $challenge, $response ) = @_;
+    my $conf = plugin_setting();
     return $rc->check_answer(
         $conf->{ private_key },
         request->remote_address,
