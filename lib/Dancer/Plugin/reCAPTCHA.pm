@@ -17,21 +17,19 @@ package Dancer::Plugin::reCAPTCHA;
     [% recaptcha %]
 
     # In your validation code....
-    my $challenge = param( 'recaptcha_challenge_field' );
     my $response  = param( 'recaptcha_response_field' );
     my $result    = recaptcha_check(
-        $challenge, 
         $response,
     );
-    die "User didn't match the CAPTCHA" unless $result->{ is_valid };
+    die "User didn't match the CAPTCHA" unless $result->{ success };
 
 =cut
 
 use Dancer ':syntax';
 use Dancer::Plugin;
-use Captcha::reCAPTCHA;
+use Captcha::reCAPTCHA::V2;
 
-my $rc   = Captcha::reCAPTCHA->new;
+my $rc   = Captcha::reCAPTCHA::V2->new;
 
 =method recaptcha_display( )
 
@@ -53,43 +51,39 @@ Using Template Toolkit as an example, this might look like:
 
 register recaptcha_display => sub {
     my $conf = plugin_setting();
-    return $rc->get_html( 
+    my %options = map { $_ => $conf->$_ if defined $conf->$_ } (qw[ theme type size ]);
+    return $rc->html(
         $conf->{ public_key },
-        undef,
-        $conf->{ use_ssl },
-        undef,
+        { %options }
     );
 };
 
-=method recaptcha_check( $$ )
+=method recaptcha_check( $ )
 
 Verify that the value the user entered matches what's in the CAPTCHA.  This
-methods takes two arguments: the challenge string and the response string.  
-These are returned to your Dancer application as two parameters: 
-F< recaptcha_challenge_field > and F< recaptcha_response_field >.
+methods takes an argument that is the response string.
+These are returned to your Dancer application as the parameter
+F< g-recaptcha-response >.
 
 For example:
 
-    my $challenge = param( 'recaptcha_challenge_field' );
-    my $response  = param( 'recaptcha_response_field' );
+    my $response  = param( 'g-recaptcha-response' );
     my $result    = recaptcha_check(
-        $challenge, 
-        $response,
+        $response
     );
-    die "User didn't match the CAPTCHA" unless $result->{ is_valid };
+    die "User didn't match the CAPTCHA" unless $result->{ success };
 
-See L<Captcha::reCAPTCHA> for a description of the result hash.
+See L<Captcha::reCAPTCHA::V2> for a description of the result hash.
 
 =cut 
 
 register recaptcha_check => sub {
-    my ( $challenge, $response ) = @_;
+    my ( $response ) = @_;
     my $conf = plugin_setting();
-    return $rc->check_answer(
+    return $rc->verify(
         $conf->{ private_key },
-        request->remote_address,
-        $challenge,
         $response,
+        request->remote_address,
     );
 };
 
@@ -100,7 +94,7 @@ Add a real test suite.
 =head1 SEE ALSO
 
 =for :list
-* L<Captcha::reCAPTCHA>
+* L<Captcha::reCAPTCHA::V2>
 * L<Dancer::Plugin>
 * L<Dancer>
 
