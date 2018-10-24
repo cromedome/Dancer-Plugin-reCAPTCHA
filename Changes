@@ -4,7 +4,7 @@
     * PR #1: Add GitHub repo meta information (Mohammad S Anwar)
  
     [ ENHANCEMENTS ]
-    * None
+    * PR #2: Migrate to Captcha::reCAPTCHA::V2 (Shawn Sorichetti)
  
     [ DOCUMENTATION ]
     * None
