@@ -1,4 +1,4 @@
-{{$NEXT}}
+0.10    2018-10-24 15:28:06-04:00 America/New_York
 
     [ BUG FIXES ]
     * PR #1: Add GitHub repo meta information (Mohammad S Anwar)
@@ -7,6 +7,5 @@
     * PR #2: Migrate to Captcha::reCAPTCHA::V2 (Shawn Sorichetti)
  
     [ DOCUMENTATION ]
-    * None
-
+    * Various improvements (Jason A. Crome)
 
